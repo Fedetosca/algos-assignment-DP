@@ -5,7 +5,20 @@ public class RodCutting {
 
   // Do not change the parameters!
   public int rodCuttingRecur(int rodLength, int[] lengthPrices) {
-    return 0;
+      // A rod of length <= 0 has a cost of 0
+      if (rodLength <= 0)
+          return 0;
+      // Set the maxPrice for a rod to be very small value. We want to maximize this value
+      int priceForRod = Integer.MIN_VALUE;
+      for (int i = 0; i < rodLength; i++)
+          /* Compare the current max with the best price for a rod which is of length rodLength - i - 1 and replace it
+           * with the larger value
+           **/
+          priceForRod = Math.max(
+                  priceForRod,
+                  lengthPrices[i] + rodCuttingRecur(rodLength - i - 1, lengthPrices)
+          );
+      return priceForRod;
   }
 
   // Do not change the parameters!
