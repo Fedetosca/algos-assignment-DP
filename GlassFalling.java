@@ -33,8 +33,28 @@ public class GlassFalling {
 
     // Do not change the parameters!
     public int glassFallingBottomUp(int floors, int sheets) {
-        // Fill in here and change the return
-        return 0;
+        int[][] glassToFloorTrials = new int[sheets + 1][floors + 1];
+        int minDrops;
+
+        for (int i = 1; i <= sheets; ++i) {
+            glassToFloorTrials[i][1] = 1;
+            glassToFloorTrials[i][0] = 0;
+        }
+
+        for (int j = 1; j <= floors; ++j) {
+            glassToFloorTrials[1][j] = j;
+        }
+
+        for (int i = 2; i <= sheets; ++i) {
+            for (int j = 2; j <= floors; ++j) {
+                glassToFloorTrials[i][j] = Integer.MAX_VALUE;
+                for (int z = 1; z <= j; ++z) {
+                    minDrops = 1 + Math.max(glassToFloorTrials[i - 1][z - 1], glassToFloorTrials[i][j - z]);
+                    glassToFloorTrials[i][j] = Math.min(glassToFloorTrials[i][j], minDrops);
+                }
+            }
+        }
+        return glassToFloorTrials[sheets][floors];
     }
 
 
