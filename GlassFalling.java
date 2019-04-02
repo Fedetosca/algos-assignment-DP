@@ -5,20 +5,20 @@ public class GlassFalling {
 
     // Do not change the parameters!
     public int glassFallingRecur(int floors, int sheets) {
+        // It takes 0 trials to test 0 floors and 1 trail to test 1 floor
         if (floors == 0 || floors == 1)
             return floors;
-
+        // It takes floor trials at a minimum if only 1 sheet is available.
         if (sheets == 1) {
             return floors;
         }
 
-
         int minDrops = Integer.MAX_VALUE;
         int tempResult;
         for (int i = 1; i <= floors; i++) {
-            tempResult = Math.max(
-                    glassFallingRecur(i - 1, sheets - 1),
-                    glassFallingRecur(floors - i, sheets));
+            int glassBrokeTrials =  glassFallingRecur(i - 1, sheets - 1);
+            int glassSurvivedTrials =  glassFallingRecur(floors - i, sheets);
+            tempResult = Math.max(glassBrokeTrials, glassSurvivedTrials);
             minDrops = Math.min(tempResult, minDrops);
         }
         return minDrops + 1;
@@ -41,7 +41,9 @@ public class GlassFalling {
             return floors;
         }
         int minDrops = floors + 1;
-        for (int glassCracked, glassSurvived, x = 1; x < floors; x++) {
+        int glassCracked;
+        int glassSurvived;
+        for (int x = 1; x < floors; x++) {
             glassCracked = floorToSheetTrials[sheets - 1][x - 1];
             glassSurvived = floorToSheetTrials[sheets][floors - x];
             if (glassCracked == Integer.MAX_VALUE) {
@@ -63,11 +65,13 @@ public class GlassFalling {
         int[][] glassToFloorTrials = new int[sheets + 1][floors + 1];
         int minDrops;
 
+        // It takes only 1 trial to test 1 floor and 0 trials to test 0 floors
         for (int i = 1; i <= sheets; ++i) {
             glassToFloorTrials[i][1] = 1;
             glassToFloorTrials[i][0] = 0;
         }
 
+        // It takes j trials if we only have 1 piece of glass available
         for (int j = 1; j <= floors; ++j) {
             glassToFloorTrials[1][j] = j;
         }
