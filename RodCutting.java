@@ -23,7 +23,20 @@ public class RodCutting {
 
   // Do not change the parameters!
   public int rodCuttingBottomUp(int rodLength, int[] lengthPrices) {
-    return 0;
+      // Create an array to store best result for all possible rod lengths
+      // A rod of length 0 has a price of 0
+      int priceForRodResults[] = new int[rodLength + 1];
+      priceForRodResults[0] = 0;
+      int priceForRod;
+      for (int i = 1; i <= rodLength; ++i) {
+          //The best price for the current rod length is the maximum price amongst all rod lengths from 0 to the current rod's length - 1
+          priceForRod = Integer.MIN_VALUE;
+          for (int j = 0; j < i; ++j) {
+              priceForRod = Math.max(priceForRod, lengthPrices[j] + priceForRodResults[i - j - 1]);
+          }
+          priceForRodResults[i] = priceForRod;
+      }
+      return priceForRodResults[rodLength];
   }
 
 
